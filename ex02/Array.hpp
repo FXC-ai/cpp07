@@ -18,11 +18,6 @@ class Array
 		{
 			this->_size = n;
 			this->_tab = new T [n];
-			for (unsigned int i = 0; i < n; i++)
-			{
-				this->_tab[i] = 0;
-			}
-
 		};
 
 		Array<T>(Array & src)
@@ -47,12 +42,18 @@ class Array
 
 		Array<T> & operator=(Array & rhs)
 		{
-			delete [] this->_tab;
-			
-			this->_tab = new T [rhs.size()];
-			for (unsigned int i = 0; i < rhs.size(); i++)
+			if (this != &rhs)
 			{
-				this->_tab[i] = rhs[i];
+				if (this->size != 0)
+				{
+					delete [] this->_tab;
+				}
+				
+				this->_tab = new T [rhs.size()];
+				for (unsigned int i = 0; i < rhs.size(); i++)
+				{
+					this->_tab[i] = rhs[i];
+				}
 			}
 			return *this;
 		}

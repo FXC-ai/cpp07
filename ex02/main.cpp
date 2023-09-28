@@ -1,5 +1,13 @@
 #include "Array.hpp"
 
+class bidon
+{
+	public :
+		bidon(){};
+		void display (){std::cout << "useless class" << std::endl;}
+};
+
+
 #define MAX_VAL 750
 int main(int, char**)
 {
@@ -70,7 +78,6 @@ int main(int, char**)
 	//A member function size() that returns the number of elements in the array.
 	std::cout << "arrayInt.size() = " << arrayInt.size() << std::endl;
 
-
 	// When accessing an element with the [ ] operator, if its index is out of bounds, an
 	//std::exception is thrown.
 	try
@@ -81,6 +88,10 @@ int main(int, char**)
 	{
 		std::cout << e.what() << " : Index is out of bounds" << std::endl;
 	}
+
+	Array<bidon> test(3);
+
+	test[2].display();
 
 	return 0;
 }
