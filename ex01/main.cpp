@@ -1,66 +1,120 @@
+#include "iter.hpp"
+#include <cstdlib>
+#include <ctime>
 
-#include <iostream>
-
-template <typename T, typename F>
-void iter(T const *arr_addr, int arr_size, F f)
+// subject
+class Awesome
 {
-	for (int i = 0; i < arr_size; i++)
-	{
-		std::cout << arr_addr[i] << std::endl;
-		arr_addr[i] = f(arr_addr[i]);
-		std::cout << arr_addr[i] << std::endl;
-	}
+  public:
+    Awesome( void ) : _n( 42 ) { return; }
+    int get( void ) const { return this->_n; }
+  private:
+    int _n;
 };
 
+std::ostream & operator<<( std::ostream & o, Awesome const & rhs )
+{
+  o << rhs.get();
+  return o;
+}
+
+template< typename T >
+void print( T& x )
+{
+  std::cout << x << std::endl;
+  return;
+}
+
+// mine
+template <typename T>
+void addOne(T &v)  
+{
+    v++;
+}
 
 template <typename T>
-T addOne(T const & v)
+void byTwo(T &v)  
 {
-	return (v + 1);
-};
+    v *= 2;
+}
 
-int main( void ) 
+int main() 
 {
-	srand(time(NULL));
-	int* mirror = new int[10];
 
-	for (int i = 0; i < 10; i++)
-	{
-		mirror[i] = rand();
-	}
+  //subject
+  const int tab[] = { 0, 1, 2, 3, 4 };
+  Awesome tab2[5];
 
+  iter( tab, 5, print<const int> );
+  iter( tab2, 5, print<Awesome> );
 
+  std::cout << "----------------------------" << std::endl;
 
-	iter<int*, int(int *)>(mirror, 10, &addOne);
+  //mine
+  srand(time(NULL));
+  int *mirror = new int[10];
 
+  for (int i = 0; i < 10; i++)
+  {
+      mirror[i] = rand() % 10;
+      std::cout << "mirror[" << i << "] = " << mirror[i] << std::endl;
+  }
 
-	return 0;
+  std::cout << "----------------------------" << std::endl;
+
+  iter<int>(mirror, 10, addOne);
+  iter<int>(mirror, 10, byTwo);
+
+  for (int i = 0; i < 10; i++)
+  {
+      std::cout << "mirror[" << i << "] = " << mirror[i] << std::endl;
+  }
+  std::cout << "----------------------------" << std::endl;
+
+  char char_tab[3];
+
+  char_tab[0] = 'a';
+  char_tab[1] = 'b';
+  char_tab[2] = 'C';
+
+  for (int i = 0; i < 3; i++)
+  {
+      std::cout << "char_tab[" << i << "] = " << char_tab[i] << std::endl;
+  }
+
+  std::cout << "----------------------------" << std::endl;
+
+  iter<char>(char_tab, 3, addOne);
+
+  for (int i = 0; i < 3; i++)
+  {
+      std::cout << "char_tab[" << i << "] = " << char_tab[i] << std::endl;
+  }
+
+  delete[] mirror;  
+    
+
+  return 0;
 }
 
 
-/*
+// int main(void)
+// {
+//     srand(time(NULL));
+//     int *mirror = new int[10];
 
-int main ()
-{
-	Zombie	Victor;
-	Zombie	*Christina;
-	Zombie	*Horde;
+//     for (int i = 0; i < 10; i++)
+//     {
+//         mirror[i] = rand() % 10;
+//     }
 
-	Victor = Zombie("Victor");
+// 	iter<int>(mirror, 10, addOne);
 
-	Christina = newZombie("Christina");
+// 	std::cout << "----------------------------" << std::endl;
 
-	Christina->announce();
-	Victor.announce();
+// 	iter<int>(mirror, 10, byTwo);
 
-	Horde = new Zombie[42];
+//     delete[] mirror;  
 
-	Horde[2].announce();
-
-	delete Christina;
-	delete [] Horde;
-	return 0;
-}
-
-
-*/
+//     return 0;
+// }
