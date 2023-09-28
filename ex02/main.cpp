@@ -7,9 +7,11 @@ class Array
 	public :
 		Array()
 		{
-			this->_tab = new T;
-			this->_size = 1;
+			this->_tab = nullptr;
+			this->_size = 0;
 		};
+
+
 		Array(unsigned int n)
 		{
 			this->_size = n;
@@ -31,34 +33,31 @@ class Array
 			for (unsigned int i = 0 ; i < tmp_size ; i++)
 			{
 				this->_tab[i] = src[i];
-
 			}
-
 
 		}
 
 		Array<T> & operator=(Array & rhs)
 		{
-
-
+			delete [] this->_tab;
 			
-
-
-			if (this->_size <= rhs.size())
+			this->_tab = new T [rhs.size()];
+			for (unsigned int i = 0; i < rhs.size(); i++)
 			{
-				for (unsigned int i = 0; i < rhs.size(); i++)
-				{
-					this->_tab[i] = rhs[i];
-				}
+				this->_tab[i] = rhs[i];
 			}
-
-
 			return *this;
 		}
 
-		T & operator[](int index)
+		T & operator[](unsigned int index)
 		{
+
+			if (index > this->_size)
+			{
+				throw OutOfRange();
+			}
 			return this->_tab[index];
+			
 		}
 
 		unsigned int size() const
@@ -66,8 +65,24 @@ class Array
 			return this->_size;
 		}
 
+		T *get_tab ()
+		{
+			return this->_tab;
+		}
+
+		T *set_tab(T* tab)
+		{
+			this->_tab = tab;
+		}
 
 
+		class OutOfRange : public std::exception
+		{
+			virtual const char* what () const throw()
+			{
+				return "Index out of range";
+			}
+		};
 
 	private :
 		T *_tab;
@@ -79,39 +94,53 @@ class Array
 
 
 
-int main(void)
+#define MAX_VAL 750
+int main(int, char**)
 {
+    Array<int> numbers(MAX_VAL);
+    int* mirror = new int[MAX_VAL];
+    srand(time(NULL));
+    for (int i = 0; i < MAX_VAL; i++)
+    {
+        const int value = rand();
+        numbers[i] = value;
+        mirror[i] = value;
+    }
+    //SCOPE
+    {
+        Array<int> tmp = numbers;
+        Array<int> test(tmp);
+    }
 
-	int * a = new int();
-	std::cout << a << std::endl;
+    for (int i = 0; i < MAX_VAL; i++)
+    {
+        if (mirror[i] != numbers[i])
+        {
+            std::cerr << "didn't save the same value!!" << std::endl;
+            return 1;
+        }
+    }
+    try
+    {
+        numbers[-2] = 0;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    try
+    {
+        numbers[MAX_VAL] = 0;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
 
-	Array<int> arr_test;
-	
-	
-	std::cout << arr_test[0] << std::endl;
-
-
-	Array<int> arr_test1(55);
-	std::cout << arr_test1[12] << std::endl;
-	arr_test1[12] = 1;
-	std::cout << arr_test1[12] << std::endl;
-
-	Array<int> arr_test2(5);
-	arr_test2[0] = 10;
-	arr_test2[1] = 20;
-	arr_test2[2] = 30;
-	arr_test2[3] = 40;
-	arr_test2[4] = 50;
-
-	Array<int> arr_test3(arr_test2);
-
-	//arr_test3 = arr_test2;
-
-	std::cout << arr_test3[3] <<std::endl;
-
-	Array<int> arr_test4;
-
-	arr
-
+    for (int i = 0; i < MAX_VAL; i++)
+    {
+        numbers[i] = rand();
+    }
+    delete [] mirror;//
     return 0;
 }
