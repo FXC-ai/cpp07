@@ -93,5 +93,16 @@ int main(int, char**)
 
 	test[2].display();
 
+
+	Array<int> *na = new Array<int>(10);
+	Array<int> *nb = new Array<int>(10);
+
+
+	na = nb;
+
+
+	delete na;
+	delete nb;
+
 	return 0;
 }

@@ -48,7 +48,7 @@ class Array
 				{
 					delete [] this->_tab;
 				}
-				
+				delete [] this->get_tab;
 				this->_tab = new T [rhs.size()];
 				for (unsigned int i = 0; i < rhs.size(); i++)
 				{
