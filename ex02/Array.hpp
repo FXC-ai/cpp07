@@ -14,13 +14,13 @@ class Array
 			this->_size = 0;
 		};
 
-		Array<T>(unsigned int n)
+		Array<T>(const unsigned int n)
 		{
 			this->_size = n;
 			this->_tab = new T [n];
 		};
 
-		Array<T>(Array & src)
+		Array<T>(Array const & src)
 		{	
 			unsigned int tmp_size;
 			tmp_size = src.size();
@@ -32,7 +32,6 @@ class Array
 			{
 				this->_tab[i] = src[i];
 			}
-
 		}
 
 		~Array<T>()
@@ -40,16 +39,18 @@ class Array
 			delete [] this->_tab;
 		};
 
-		Array<T> & operator=(Array & rhs)
+		Array<T> & operator=(Array const & rhs)
 		{
 			if (this != &rhs)
 			{
-				if (this->size != 0)
+				if (this->_size != 0)
 				{
 					delete [] this->_tab;
 				}
-				delete [] this->get_tab;
+
+				this->_size = rhs.size();
 				this->_tab = new T [rhs.size()];
+
 				for (unsigned int i = 0; i < rhs.size(); i++)
 				{
 					this->_tab[i] = rhs[i];

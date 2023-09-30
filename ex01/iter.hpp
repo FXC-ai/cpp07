@@ -2,7 +2,6 @@
 #define ITER_HPP
 #include <iostream>
 
-
 template <typename T>
 void iter(T *arr_addr, int arr_size, void (&f)(T &))
 {
@@ -11,7 +10,6 @@ void iter(T *arr_addr, int arr_size, void (&f)(T &))
         f(arr_addr[i]);
     }
 }
-
 
 template <typename T>
 void iter(T *arr_addr, int arr_size, void (&f)(T))

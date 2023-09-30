@@ -7,79 +7,34 @@ class bidon
 		void display (){std::cout << "useless class" << std::endl;}
 };
 
-
-#define MAX_VAL 750
 int main(int, char**)
 {
-	Array<int> numbers(MAX_VAL);
-	int* mirror = new int[MAX_VAL];
-	srand(time(NULL));
-	for (int i = 0; i < MAX_VAL; i++)
-	{
-		const int value = rand();
-		numbers[i] = value;
-		mirror[i] = value;
-	}
-	//SCOPE
-	{
-		Array<int> tmp = numbers;
-		Array<int> test(tmp);
-	}
-
-	for (int i = 0; i < MAX_VAL; i++)
-	{
-		if (mirror[i] != numbers[i])
-		{
-			std::cerr << "didn't save the same value!!" << std::endl;
-			return 1;
-		}
-	}
-	try
-	{
-		numbers[-2] = 0;
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-	}
-	try
-	{
-		numbers[MAX_VAL] = 0;
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-	}
-
-	for (int i = 0; i < MAX_VAL; i++)
-	{
-		numbers[i] = rand();
-	}
-	delete [] mirror;
 
 	std::cout << std::endl;
-
-	//Test Construction with no parameters
+	std::cout << "Test Construction with no parameters" << std::endl;
 	Array<char> noParam;
 
-	//Construction with an unsigned int n as a parameter
+	std::cout << std::endl;
+	std::cout << "Construction with an unsigned int n as a parameter" << std::endl;
 	Array<int> arrayInt(3);
 
-	//Elements can be accessed through the subscript operator: [ ].
+	std::cout << std::endl;
+	std::cout << "Elements can be accessed through the subscript operator: [ ]." << std::endl;
 	arrayInt[0] = 3;
 	arrayInt[1] = 1;
 	arrayInt[2] = 4;
-	
 	for (int i = 0; i < 3; i++)
 	{
 		std::cout << "arrayInt[" << i << "] = " << arrayInt[i] << std::endl;
 	}
 
-	//A member function size() that returns the number of elements in the array.
+
+	std::cout << std::endl;
+	std::cout << "A member function size() that returns the number of elements in the array." << std::endl;
 	std::cout << "arrayInt.size() = " << arrayInt.size() << std::endl;
 
-	// When accessing an element with the [ ] operator, if its index is out of bounds, an
-	//std::exception is thrown.
+	std::cout << "When accessing an element with the [ ] operator, if its index is out of bounds, an std::exception is thrown." <<std::endl;
+	
 	try
 	{
 		std::cout << arrayInt[14] << std::endl;
@@ -89,20 +44,30 @@ int main(int, char**)
 		std::cout << e.what() << " : Index is out of bounds" << std::endl;
 	}
 
+	std::cout << std::endl;
+	std::cout << "Proof that it is possible to create an array with a complex type" << std::endl;
 	Array<bidon> test(3);
-
 	test[2].display();
 
-
+	std::cout << std::endl;
+	std::cout << "Use of the operator= overload" << std::endl;
 	Array<int> *na = new Array<int>(10);
 	Array<int> *nb = new Array<int>(10);
-
-
-	na = nb;
-
-
+	*na = *nb;
 	delete na;
 	delete nb;
+
+	std::cout << std::endl;
+	std::cout << "Creation of an Array using an other one" << std::endl;
+	
+	Array<int> *src = new Array<int>(100);
+	(*src)[0] = 42;
+	std::cout << "(*src)[0] = " << (*src)[0] << std::endl;
+	Array<int> *copy = new Array<int>(*src);
+	std::cout << "(*copy)[0] = " << (*copy)[0] << std::endl;
+
+	delete src;
+	delete copy;
 
 	return 0;
 }
